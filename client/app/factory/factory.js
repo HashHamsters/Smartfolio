@@ -1,6 +1,6 @@
 angular.module('app.factory', [])
   .factory('Auth', function ($http, $location, $window) {
-    var login = function (user) { //function to login 
+    var login = function (user) { //function to login
       return $http({
           method: 'POST',
           url: '/signin',
@@ -21,7 +21,7 @@ angular.module('app.factory', [])
         });
     };
 
-    var isAuth = function () { //fetching the token from local storage and checking if it exisits 
+    var isAuth = function () { //fetching the token from local storage and checking if it exisits
       return !!$window.localStorage.getItem('com.smartfolio');
     }
 
@@ -38,7 +38,7 @@ angular.module('app.factory', [])
   })
    .factory('Pics', function ($http) {
     var sendPhotos = function (files) {
-      return $http({ //send pictures server 
+      return $http({ //send pictures server
         method: 'POST',
         url: '/upload/photos',
         headers: {
@@ -64,13 +64,13 @@ angular.module('app.factory', [])
       return $http({
         method: 'GET',
         url: '/photos'
-      }).then(function (res) {
-        return res.data;
+      }).then(function (resp) {
+        return resp.data;
       })
     };
 
     var imageDeleter = function(imghash) {
-      return $http({ 
+      return $http({
         method: 'DELETE',
         url: `/photos/${imghash}`
       }).then(function (resp) {
@@ -84,6 +84,155 @@ angular.module('app.factory', [])
       imageList,
       imageDeleter
     })
+  })
+  .factory('Albums', function($http) {
+    var albumList = function() {
+      return $http({
+        method: 'GET',
+        url: `/albums`
+      }).then(function(resp) {
+        return resp.data;
+      });
+    };
+
+    var albumFetcher = function(albumName) {
+      return $http({
+        method: 'GET',
+        url: `/albums/${albumName}`
+      }).then(function(resp) {
+        return resp.data;
+      });
+    };
+
+    var sendAlbum = function(albums) {
+      console.log('making a new album', albums);
+      return $http({
+        method: 'POST',
+        url: '/upload/albums',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: albums
+      }).then(function(resp) {
+        console.log('album creation complete');
+        return resp.data;
+      });
+    };
+
+    var updateAlbum = function(album) {
+      return $http({
+        method: 'PUT',
+        url: '/update/albums',
+        params: {
+          album: album.idalbums
+        },
+        data: album,
+        transformRequest: angular.identity
+      }).then(function(resp) {
+        console.log('successfully updated album');
+      });
+    };
+
+    var deleteAlbum = function(album) {
+      return $http({
+        method: 'DELETE',
+        url: `/albums/${album}`
+      }).then(function(resp) {
+        console.log('successfully deleted album');
+        return resp.data;
+      })
+    };
+
+    var addImgToAlbum = function(imageName) {
+      return $http({
+        method: 'PUT',
+        url: `/albums/${imageName}`,
+        params: {
+          image: imageName
+        },
+        data: imageName
+      }).then(function(resp) {
+        return resp.data;
+      });
+    };
+
+    return ({
+      albumList,
+      albumFetcher,
+      sendAlbum,
+      updateAlbum,
+      deleteAlbum,
+      addImgToAlbum
+    })
+  })
+  .factory('Shared', function ($http) {
+
+    var fetcher = function() {
+      return $http({
+        method: 'GET',
+        url: '/shared/albums',
+      })
+      .then(function(resp) {
+        return resp.data;
+      })
+    };
+
+    var getId = function(username) {
+      return $http({
+        method: 'GET',
+        url: `/shared/${username}`
+      })
+      .then(function(resp) {
+        return resp.data;
+      })
+    };
+
+    var getList = function(albumId) {
+      return $http({
+        method: 'GET',
+        url: `/shared/list/${albumId}`,
+      })
+      .then(function(resp) {
+        return resp.data;
+      })
+    };
+
+    var addUsers = function(albumId, shareArr, permission) {
+      return $http({
+        method: 'PUT',
+        url: '/shared/add',
+        data: {
+          albumId: albumId,
+          shareUsers: shareArr,
+          permission: permission
+        }
+      })
+      .then(function(resp) {
+        return resp.data;
+      })
+    };
+
+    var removeUser = function(albumId, userId) {
+      return $http({
+        method: 'DELETE',
+        url: '/shared',
+        data: {
+          albumId: albumId,
+          sharedUserId: userId
+        }
+      })
+      .then(function(resp) {
+        return resp.data;
+      })
+    };
+
+    return {
+      fetcher: fetcher,
+      getId: getId,
+      getList: getList,
+      addUsers: addUsers,
+      removeUser: removeUser
+    }
   })
   .factory('Collage', function () {
     var imgObj = {};
