@@ -5,6 +5,7 @@ angular.module('app', ['app.landing',
     'app.albumViewer',
     'app.settings',
     'app.shared',
+    'app.sharedViewer',
     'ui.grid',
     'angularModalService',
     'ngRoute',
@@ -43,6 +44,11 @@ angular.module('app', ['app.landing',
         controller: 'SharedCtrl',
         authenticate: true
       })
+      .when('/sharedViewer', {
+        templateUrl: '/app/shared/sharedViewer.html',
+        controller: 'SharedViewerCtrl',
+        authenticate: true
+      })
 
     $httpProvider.interceptors.push('AttachTokens');
   })
@@ -68,20 +74,7 @@ angular.module('app', ['app.landing',
       }();
     }
   })
-  .controller('CreateAlbumCtrl', function($scope, close, Collage, Albums) {
-
-  })
-  .controller('ShareModalCtrl', function ($scope, close, Pics, Collage) { // takes the files from the dialogbox and sends it to server
-
-    var fd = new FormData();
-    $scope.uploadFile = function (fileType, files) {
-      fd.append(fileType, files[0])
-    }
-    $scope.connection = function () {
-      Pics.sendPhotos(fd)
-      .then(function () {
-        Collage.getFetcher()();
-      });
+  .controller('ShareModalCtrl', function ($scope, close, Shared, Pics, Collage) { // takes the files from the dialogbox and sends it to server
       $scope.close = function () {
         close(null,500);
       }();
