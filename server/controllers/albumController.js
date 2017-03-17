@@ -19,7 +19,7 @@ module.exports = {
             // include all the photo information as a property of the data array that is sent back to client
             var actualImage = images[0];
             album['images'] = actualImage.map(function(imageID) {
-              return imageID.imageID;
+              return imageID.imageId;
             });
             data.push(album);
 
