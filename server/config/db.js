@@ -54,48 +54,28 @@ module.exports = knex;
 //   ON DELETE NO ACTION
 //   ON UPDATE NO ACTION;
 
-// CREATE TABLE `smartfolio`.`albums` (
-//   `idalbums` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-//   `name` BLOB NOT NULL,
-//   `description` LONGTEXT NULL,
-//   `userID` INT NOT NULL,
+// CREATE TABLE `albums` (
+//   `idalbums` int(11) unsigned NOT NULL AUTO_INCREMENT,
+//   `name` longtext,
+//   `description` longtext,
+//   `userid` int(11) DEFAULT NULL,
 //   PRIMARY KEY (`idalbums`),
-//   UNIQUE INDEX `idalbums_UNIQUE` (`idalbums` ASC),
-//   INDEX `userID_idx` (`userID` ASC),
-//   CONSTRAINT `userID`
-//     FOREIGN KEY (`userID`)
-//     REFERENCES `smartfolio`.`users` (`idusers`)
-//     ON DELETE NO ACTION
-//     ON UPDATE NO ACTION);
+//   KEY `userid` (`userid`),
+//   CONSTRAINT `userid` FOREIGN KEY (`userid`) REFERENCES `users` (`idusers`)
+// ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
-// CREATE TABLE `smartfolio`.`album-image` (
-//   `idalbum-image` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-//   `imageID` INT(11) NOT NULL,
-//   `albumID` INT(10) UNSIGNED NOT NULL,
-//   PRIMARY KEY (`idalbum-image`),
-//   INDEX `imagesID_idx` (`imageID` ASC),
-//   UNIQUE INDEX `idalbum-image_UNIQUE` (`idalbum-image` ASC),
-//   UNIQUE INDEX `imageID_UNIQUE` (`imageID` ASC),
-//   UNIQUE INDEX `albumID_UNIQUE` (`albumID` ASC),
-//   CONSTRAINT `imagesID`
-//     FOREIGN KEY (`imageID`)
-//     REFERENCES `smartfolio`.`images` (`idimages`)
-//     ON DELETE NO ACTION
-//     ON UPDATE NO ACTION,
-//   CONSTRAINT `albumsID`
-//     FOREIGN KEY (`albumID`)
-//     REFERENCES `smartfolio`.`albums` (`idalbums`)
-//     ON DELETE NO ACTION
-//     ON UPDATE NO ACTION);
+// CREATE TABLE `albumsImages` (
+//   `idalbumsImages` int(11) unsigned NOT NULL AUTO_INCREMENT,
+//   `imageId` int(11) DEFAULT NULL,
+//   `albumId` int(11) unsigned DEFAULT NULL,
+//   PRIMARY KEY (`idalbumsImages`),
+//   KEY `imageId` (`imageId`),
+//   KEY `albumId` (`albumId`),
+//   CONSTRAINT `albumId` FOREIGN KEY (`albumId`) REFERENCES `albums` (`idalbums`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+//   CONSTRAINT `imageId` FOREIGN KEY (`imageId`) REFERENCES `images` (`idimages`) ON DELETE NO ACTION ON UPDATE NO ACTION
+// ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
-// ALTER TABLE `smartfolio`.`album_image` 
-// ADD INDEX `albumid_idx` (`albumID` ASC);
-// ALTER TABLE `smartfolio`.`album_image`
-// ADD CONSTRAINT `albumid`
-//   FOREIGN KEY (`albumID`)
-//   REFERENCES `smartfolio`.`albums` (`userID`)
-//   ON DELETE NO ACTION
-//   ON UPDATE NO ACTION;
+
 
 
 // CREATE TABLE `smartfolio`.`shared` (
