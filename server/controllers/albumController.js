@@ -26,10 +26,15 @@ module.exports = {
             if(data.length === albuminfo[0].length) {
               res.status(200).send(data);
             }
+          }).catch(function(err) {
+            console.error('error selecting images:', err);
           })
-          // TODO: create catch statements for more code robustness
         })
+      }).catch(function(err) {
+        console.error('error selecting albums:', err);
       })
+    }).catch(function(err) {
+      console.error('error selecting users:', err);
     })
   },
 
