@@ -20,7 +20,7 @@ module.exports = {
             .then(function(albuminfo) {
               shared['name'] = albuminfo[0][0].name;
               shared['description'] = albuminfo[0][0].description;
-              db.raw(`SELECT * FROM smartfolio.album_image WHERE albumID=${albuminfo[0][0].idalbums}`)
+              db.raw(`SELECT * FROM smartfolio.albumsImages WHERE albumID=${albuminfo[0][0].idalbums}`)
               .then(function(imagesObj) {
                 var images = imagesObj[0];
                 shared['images'] = [];
