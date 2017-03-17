@@ -14,7 +14,7 @@ module.exports = {
       db.raw(`SELECT * FROM smartfolio.albums WHERE userID = '${userID}'`)
       .then(function(albuminfo) {
         albuminfo[0].forEach(function(album, index) {
-          db.raw(`SELECT * FROM smartfolio.album_image WHERE albumID=${album.idalbums}`) // fetch all photo records that have a relationship with the album(s)
+          db.raw(`SELECT * FROM smartfolio.albumsImages WHERE albumID=${album.idalbums}`) // fetch all photo records that have a relationship with the album(s)
           .then(function(images) {
             // include all the photo information as a property of the data array that is sent back to client
             var actualImage = images[0];
@@ -58,7 +58,7 @@ module.exports = {
           console.log('inside the array to get images', images);
           if(images) {
             images.forEach(function(image, index) {
-              db.raw(`INSERT INTO smartfolio.album_image values (null, ${image}, ${LAST_INSERT_ID})`)
+              db.raw(`INSERT INTO smartfolio.albumsImages values (null, ${image}, ${LAST_INSERT_ID})`)
               .then(function() {
                 if(index === images.length - 1) {
                   res.sendStatus(200);

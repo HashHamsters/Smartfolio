@@ -78,7 +78,6 @@ angular.module('app', ['app.landing',
       $scope.close = function () {
         close(null,500);
       }();
-    }
   })
   .run(function ($rootScope, $location, Auth) {
     $rootScope.$on('$routeChangeStart', function (evt, next, current) {
